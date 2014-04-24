@@ -75,77 +75,24 @@ window.findNQueensSolution = function(n) {
   return solution;
 };
 
-// var inverse = function (arr) {
-//   return _.map(arr, function (num) { return num === 0 ? 1 : 0; });
-// };
-
-// var combineBitArrays = function (arr1, arr2, arr3, length) {
-//   var arrResult = [];
-//   for (var i = 0; i < length; i++) {
-//     arrResult.push(arr1[i] || arr2[i] || arr3[i]);
-//   }
-//   return arrResult;
-// };
-
-// var updateColumnConflicts = function (columnConflicts, newQueen) {
-//   var newColumnConflicts = columnConflicts.slice();
-//   newColumnConflicts[newQueen] = 1;
-//   return newColumnConflicts;
-// };
-
-// var updateLeftDiagConflicts = function (leftDiagConflicts, newQueen) {
-//   var newLeftDiagConflicts = leftDiagConflicts.slice(1);
-//   newLeftDiagConflicts[newQueen - 1] = 1;
-//   newLeftDiagConflicts.push(0);
-//   return newLeftDiagConflicts;
-// };
-
-// var updateRightDiagConflicts = function (rightDiagConflicts, newQueen) {
-//   var newRightDiagConflicts = rightDiagConflicts.slice();
-//   newRightDiagConflicts.unshift(0);
-//   newRightDiagConflicts.pop(); // Not strictly necessary, but we should do it.
-//   newRightDiagConflicts[newQueen + 1] = 1;
-//   return newRightDiagConflicts;
-// };
-
-var pack = function (arr, value, length) {
-  for (var i = 0; i < length; i++) {
-    arr[i] = value;
-  }
-  return arr;
-};
-
 var nQueens = function (n) {
   var solutions = 0;
 
-  var nQueensHelper = function (queensLeft, columnConflicts,
-      leftDiagConflicts, rightDiagConflicts) {
-    if (queensLeft !== 0) {
-      for (var i = 0; i < n; i++) {
-        if (!(columnConflicts[i] || leftDiagConflicts[i] || rightDiagConflicts[i])) {
-          var newColumnConflicts = columnConflicts.slice();
-          newColumnConflicts[i] = 1;
-
-          var newRightDiagConflicts = rightDiagConflicts.slice();
-          newRightDiagConflicts.unshift(0);
-          newRightDiagConflicts[i + 1] = 1;
-
-          var newLeftDiagConflicts = leftDiagConflicts.slice(1);
-          newLeftDiagConflicts.push(0);
-          newLeftDiagConflicts[i - 1] = 1;
-
-          nQueensHelper(
-            queensLeft - 1,
-            newColumnConflicts,
-            newLeftDiagConflicts,
-            newRightDiagConflicts);
-        }
-      }
-    } else {
-      solutions++;
+  var nQueensHelper = function(magicQ, leftDiags, columns, rightDiags) {
+    var validSpots = ~(leftDiags|columns|rightDiags) & magicQ;
+    while(validSpots) {
+      var spot = -validSpots & validSpots;
+      validSpots ^= spot;
+      nQueensHelper(
+        magicQ,
+        (leftDiags|spot) << 1,
+        (columns|spot),
+        (rightDiags|spot) >> 1);
     }
+    solutions += columns === magicQ;
   };
-  nQueensHelper(n, pack([], 0, n), pack([], 0, n), pack([], 0, n));
+
+  nQueensHelper((1 << n) - 1, 0, 0, 0);
 
   return solutions;
 };
