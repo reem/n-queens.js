@@ -92,9 +92,36 @@ var nQueens = function (n) {
     solutions += columns === magicQ;
   };
 
-  nQueensHelper((1 << n) - 1, 0, 0, 0);
+  if (n < 4) {
+    nQueensHelper((1 << n) - 1, 0, 0, 0);
+    return solutions;
+  }
 
-  return solutions;
+  var half = Math.floor(n / 2);
+  var firstValidSpots = ~(0) & ((1 << half) - 1);
+  while(firstValidSpots) {
+    var spot = -firstValidSpots & firstValidSpots;
+    firstValidSpots ^= spot;
+    nQueensHelper(
+        ((1<<n) - 1),
+        (0|spot) << 1,
+        (0|spot),
+        (0|spot) >> 1);
+  }
+
+  solutions *= 2;
+  if (n % 2) {
+    // Middle one:
+    spot = 0 | (1 << (half + 1));
+    nQueensHelper(
+        ((1<<n) - 1),
+        (0|spot) << 1,
+        (0|spot),
+        (0|spot) >> 1);
+    return solutions;
+  } else {
+    return solutions;
+  }
 };
 
 // return the number of nxn chessboards that exist, with n queens placed such that none of them can attack each other
