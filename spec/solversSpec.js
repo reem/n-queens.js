@@ -51,6 +51,19 @@ describe('solvers', function() {
       });
     });
 
-  });
+    it('finds the number of valid solutions for 12 queens', function() {
+      countNQueensSolutions(12);
+      expect("Something").to.be.a("string");
+    });
 
+    // it('finds the number of valid solutions for 14 queens', function() {
+    //   countNQueensSolutions(14);
+    //   expect("Something").to.be.a("string");
+    // });
+
+    // it('finds the number of valid solutions for 16 queens', function() {
+    //   countNQueensSolutions(16);
+    //   expect("Something").to.be.a("string");
+    // });
+  });
 });
