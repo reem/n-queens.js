@@ -1,6 +1,6 @@
 #Javascript N-Queens
 
-The 30,000 foot overview of this algorithm is as follows:
+The 30,000 foot overview:
 
 Our inner helper function that does all of the work only takes a
 few arguments: three integers which represent the spots on the
@@ -16,6 +16,9 @@ over all of the open spots and profit.
 We can then use bit magic to significantly speed up the process over
 arrays - almost a 50x speedup.
 
-Time for n=12: 60ms.
+Time for n=12: `60`ms.
+
+Please see `src/solvers.js` for a significantly more detailed explanation
+of the algorithm including a thorough explanation of all bit magic.
 
 This was part of the curriculum at Hack Reactor and worked on with a pair.
